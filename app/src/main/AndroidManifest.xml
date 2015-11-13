@@ -16,12 +16,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <receiver android:name="com.domotrix.domotrixdemo.TestReceiver" >
             <intent-filter>
                 <action android:name="com.domotrix.android.DOMOTRIX_CONNECTED" />
             </intent-filter>
         </receiver>
-
 
     </application>
 

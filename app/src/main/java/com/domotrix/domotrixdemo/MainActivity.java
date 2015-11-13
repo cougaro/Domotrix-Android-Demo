@@ -19,13 +19,14 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import com.domotrix.android.services.IDomotrixService;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationDrawerFragment.NavigationDrawerCallbacks {
 
-    private final static String TAG = "Domotrix Android Demo";
+    private final static String TAG = "DEMO";
 
     /**
      * Fragment managing the behaviors, interactions and presentation of the navigation drawer.
@@ -42,6 +43,8 @@ public class MainActivity extends AppCompatActivity
      */
     protected IDomotrixService mService = null;
     private boolean mIsBound = false;
+
+    SensorFragment sensorFragment = SensorFragment.newInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,24 +91,17 @@ public class MainActivity extends AppCompatActivity
     private ServiceConnection mConnection = new ServiceConnection() {
         public void onServiceConnected(ComponentName className, IBinder service) {
             mService = IDomotrixService.Stub.asInterface(service);
+            if (sensorFragment != null) sensorFragment.setService(mService);
             try {
-                Log.d(TAG, "************************************************ ");
-                Log.d(TAG," ************************************************ ");
-                Log.d(TAG," ************************************************ ");
-                Log.d(TAG, "CONNECTION");
-                Log.d(TAG, " ************************************************ ");
-                Log.d(TAG, " ************************************************ ");
-                Log.d(TAG, " ************************************************ ");
-
-                mService.remoteLog(TAG, "=======================================");
-                mService.remoteLog(TAG, "=======================================");
-                mService.remoteLog(TAG,"THIS IS A TEST");
+                mService.remoteLog(TAG,"=======================================");
+                mService.remoteLog(TAG,"=======================================");
+                mService.remoteLog(TAG,"APP CLIENT - CONNECTED");
                 mService.remoteLog(TAG,"=======================================");
                 mService.remoteLog(TAG,"=======================================");
                 String sdkVersion = mService.getVersion();
                 Log.d(TAG,"SDK Version :"+sdkVersion);
             } catch (RemoteException e) {
-                Log.e(TAG,"ERRORE",e);
+                Log.e(TAG,"ERROR",e);
             }
         }
         public void onServiceDisconnected(ComponentName className) {
@@ -135,7 +131,7 @@ public class MainActivity extends AppCompatActivity
         switch (position) {
             case 0:
                 fragmentManager.beginTransaction()
-                        .replace(R.id.container, SensorFragment.newInstance())
+                        .replace(R.id.container, sensorFragment)
                         .commit();
                 break;
             default:
@@ -241,6 +237,7 @@ public class MainActivity extends AppCompatActivity
      * A placeholder fragment containing a simple view.
      */
     public static class SensorFragment extends Fragment {
+        private IDomotrixService mService = null;
 
         public static SensorFragment newInstance() {
             SensorFragment fragment = new SensorFragment();
@@ -249,10 +246,34 @@ public class MainActivity extends AppCompatActivity
 
         public SensorFragment() {}
 
+        public void setService(IDomotrixService service) {
+            mService = service;
+        }
+
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
             View rootView = inflater.inflate(R.layout.fragment_sensor, container, false);
+
+            Button btn = (Button)rootView.findViewById(R.id.commandButton);
+            btn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (mService != null) {
+                        try {
+                            //if (mService.isConnected()) {
+                                mService.remoteLog(TAG,"SEND THE MESSAGE VIA WAMP....");
+                                mService.publish("com.myapp.radio","{'state':'on'}");
+                            //}
+                        } catch (RemoteException e) {
+                            e.printStackTrace();
+                        }
+                    } else {
+                        Log.e(TAG,"MSERVICE IS NULL....");
+                    }
+                }
+            });
+
             return rootView;
         }
 
