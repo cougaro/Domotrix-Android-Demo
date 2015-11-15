@@ -85,7 +85,7 @@
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/imageButton"
+                    android:id="@+id/imageButton1"
                     android:src="@mipmap/bulb_red"
                     android:background="@android:color/transparent" />
 
@@ -130,7 +130,7 @@
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/imageButton"
+                    android:id="@+id/imageButton2"
                     android:src="@mipmap/bulb_red"
                     android:background="@android:color/transparent" />
 
@@ -176,7 +176,7 @@
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/imageButton"
+                    android:id="@+id/imageButton3"
                     android:src="@mipmap/bulb_red"
                     android:background="@android:color/transparent" />
 
@@ -220,7 +220,7 @@
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/imageButton"
+                    android:id="@+id/imageButton4"
                     android:src="@mipmap/bulb_red"
                     android:background="@android:color/transparent" />
 
@@ -264,7 +264,7 @@
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/imageButton"
+                    android:id="@+id/imageButton5"
                     android:src="@mipmap/bulb_red"
                     android:background="@android:color/transparent" />
 

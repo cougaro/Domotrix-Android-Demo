@@ -20,6 +20,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.domotrix.android.services.IDomotrixService;
 
@@ -261,15 +263,37 @@ public class MainActivity extends AppCompatActivity
                 public void onClick(View v) {
                     if (mService != null) {
                         try {
-                            //if (mService.isConnected()) {
+                            if (mService.isConnected()) {
                                 mService.remoteLog(TAG,"SEND THE MESSAGE VIA WAMP....");
-                                mService.publish("com.myapp.radio","{'state':'on'}");
-                            //}
+                                mService.publish("com.myapp.radio","{\"state\":\"on\"}");
+                            } else {
+                                Toast.makeText(getActivity().getApplicationContext(), "No connection", Toast.LENGTH_SHORT);
+                            }
                         } catch (RemoteException e) {
                             e.printStackTrace();
                         }
                     } else {
-                        Log.e(TAG,"MSERVICE IS NULL....");
+                        Toast.makeText(getActivity().getApplicationContext(), "No Service Active", Toast.LENGTH_SHORT);
+                    }
+                }
+            });
+
+            ImageView img1 = (ImageView)rootView.findViewById(R.id.imageButton1);
+            img1.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (mService != null) {
+                        try {
+                            if (mService.isConnected()) {
+                                mService.publish("com.myapp.lights","{\"state\":\"on\",\"location\":\"kitchen\"}");
+                            } else {
+                                Toast.makeText(getActivity().getApplicationContext(), "No connection", Toast.LENGTH_SHORT);
+                            }
+                        } catch (RemoteException e) {
+                            e.printStackTrace();
+                        }
+                    } else {
+                        Toast.makeText(getActivity().getApplicationContext(), "No Service Active", Toast.LENGTH_SHORT);
                     }
                 }
             });

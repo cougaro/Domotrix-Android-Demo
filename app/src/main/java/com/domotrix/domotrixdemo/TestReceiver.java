@@ -13,12 +13,6 @@ public class TestReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        Log.d(TAG, "*********************************************");
-        Log.d(TAG,"*********************************************");
-        Log.d(TAG,"BROADCAST RECEIVER CALLED");
-        Log.d(TAG,"*********************************************");
-        Log.d(TAG,"*********************************************");
-
         PendingIntent pIntent = PendingIntent.getActivity(context, (int) System.currentTimeMillis(), intent, 0);
         // Build notification
         // Actions are just fake
