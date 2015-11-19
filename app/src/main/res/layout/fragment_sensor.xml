@@ -20,7 +20,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:text="DOMOTRIX COMMAND"
+                    android:text="VOICE COMMAND"
                     android:id="@+id/textView"
                     android:gravity="right"
                     android:layout_marginRight="10dip" />
@@ -41,7 +41,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/commandButton"
-                    android:text="SEND"/>
+                    android:text="RUN"/>
 
             </LinearLayout>
         </TableRow>

@@ -5,9 +5,11 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.os.RemoteException;
+import android.speech.RecognitionService;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.DrawerLayout;
@@ -24,11 +26,18 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.domotrix.android.services.IDomotrixService;
+import com.domotrix.domotrixdemo.sensors.RecognitionData;
+import com.domotrix.domotrixdemo.sensors.Sensor;
+import com.domotrix.language.DOMOTRIXCommand;
+
+import java.io.IOException;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationDrawerFragment.NavigationDrawerCallbacks {
 
     private final static String TAG = "DEMO";
+    private SpeechRecognition mSpeechRecognition = new SpeechRecognition();
+    private MediaPlayer mp;
 
     /**
      * Fragment managing the behaviors, interactions and presentation of the navigation drawer.
@@ -93,7 +102,10 @@ public class MainActivity extends AppCompatActivity
     private ServiceConnection mConnection = new ServiceConnection() {
         public void onServiceConnected(ComponentName className, IBinder service) {
             mService = IDomotrixService.Stub.asInterface(service);
-            if (sensorFragment != null) sensorFragment.setService(mService);
+            if (sensorFragment != null) {
+                sensorFragment.setService(mService);
+                sensorFragment.setSpeechRecognition(mSpeechRecognition);
+            }
             try {
                 mService.remoteLog(TAG,"=======================================");
                 mService.remoteLog(TAG,"=======================================");
@@ -195,6 +207,44 @@ public class MainActivity extends AppCompatActivity
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    public void onActivityResult (int requestCode, int resultCode, Intent data) {
+        DOMOTRIXCommand domotrixCommand = mSpeechRecognition.recognize(requestCode, data);
+        if (domotrixCommand != null) {
+            mp = MediaPlayer.create(this, R.raw.computerbeep35);
+            mp.start();
+            Log.d(TAG,"Command :"+domotrixCommand.getCommand());
+            Log.d(TAG,"Controller :"+domotrixCommand.getController());
+            Log.d(TAG,"Mode :"+domotrixCommand.getMode());
+            Log.d(TAG,"Location :"+domotrixCommand.getLocation());
+            Log.d(TAG,"Start in :"+domotrixCommand.getStart()+" ms");
+            if (mService != null) {
+                Sensor sensor = new Sensor("com.domotrix.sensor", new RecognitionData(
+                        domotrixCommand.getCommand(),
+                        domotrixCommand.getController(),
+                        domotrixCommand.getLocation(),
+                        domotrixCommand.getMode(),
+                        domotrixCommand.getShow(),
+                        domotrixCommand.getStart(),
+                        domotrixCommand.getQuantity()
+                ));
+                try {
+                    mService.publish("com.domotrix.recognitiondata",JSONMapper.encode(sensor.getData()));
+                } catch (RemoteException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            } else {
+                Toast toast = Toast.makeText(MainActivity.this, "not connected", Toast.LENGTH_SHORT);
+                toast.show();
+            }
+        } else {
+            mp = MediaPlayer.create(this, R.raw.denybeep1);
+            mp.start();
+        }
+    }
+
     /**
      * A placeholder fragment containing a simple view.
      */
@@ -240,6 +290,7 @@ public class MainActivity extends AppCompatActivity
      */
     public static class SensorFragment extends Fragment {
         private IDomotrixService mService = null;
+        private SpeechRecognition mSpeechRecognition;
 
         public static SensorFragment newInstance() {
             SensorFragment fragment = new SensorFragment();
@@ -250,6 +301,10 @@ public class MainActivity extends AppCompatActivity
 
         public void setService(IDomotrixService service) {
             mService = service;
+        }
+
+        public void setSpeechRecognition(SpeechRecognition speechRecognition) {
+            mSpeechRecognition = speechRecognition;
         }
 
         @Override
@@ -264,16 +319,17 @@ public class MainActivity extends AppCompatActivity
                     if (mService != null) {
                         try {
                             if (mService.isConnected()) {
-                                mService.remoteLog(TAG,"SEND THE MESSAGE VIA WAMP....");
-                                mService.publish("com.myapp.radio","{\"state\":\"on\"}");
+                                //mService.remoteLog(TAG,"SEND THE MESSAGE VIA WAMP....");
+                                //mService.publish("com.myapp.radio","{\"state\":\"on\"}");
+                                mSpeechRecognition.start(getActivity(), "DOMOTRIX DEMO");
                             } else {
-                                Toast.makeText(getActivity().getApplicationContext(), "No connection", Toast.LENGTH_SHORT);
+                                Toast.makeText(getActivity().getApplicationContext(), "No connection", Toast.LENGTH_SHORT).show();
                             }
                         } catch (RemoteException e) {
                             e.printStackTrace();
                         }
                     } else {
-                        Toast.makeText(getActivity().getApplicationContext(), "No Service Active", Toast.LENGTH_SHORT);
+                        Toast.makeText(getActivity().getApplicationContext(), "No Service Active", Toast.LENGTH_SHORT).show();
                     }
                 }
             });
@@ -287,13 +343,13 @@ public class MainActivity extends AppCompatActivity
                             if (mService.isConnected()) {
                                 mService.publish("com.myapp.lights","{\"state\":\"on\",\"location\":\"kitchen\"}");
                             } else {
-                                Toast.makeText(getActivity().getApplicationContext(), "No connection", Toast.LENGTH_SHORT);
+                                Toast.makeText(getActivity().getApplicationContext(), "No connection", Toast.LENGTH_SHORT).show();
                             }
                         } catch (RemoteException e) {
                             e.printStackTrace();
                         }
                     } else {
-                        Toast.makeText(getActivity().getApplicationContext(), "No Service Active", Toast.LENGTH_SHORT);
+                        Toast.makeText(getActivity().getApplicationContext(), "No Service Active", Toast.LENGTH_SHORT).show();
                     }
                 }
             });
