@@ -41,7 +41,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/commandButton"
-                    android:text="RUN"/>
+                    android:text="SPEAK"/>
 
             </LinearLayout>
         </TableRow>
@@ -66,7 +66,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:text="KITCHEN LIGHTS"
+                    android:text="KITCHEN"
                     android:id="@+id/textView"
                     android:layout_marginRight="10dip" />
 
@@ -92,6 +92,25 @@
             </LinearLayout>
         </TableRow>
 
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_column="1"
+            android:layout_weight="0.5"
+            android:gravity="center_vertical">
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal"
+                android:gravity="center_vertical">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/imageButton1B"
+                    android:src="@mipmap/bulb_on"
+                    android:background="@android:color/transparent" />
+
+            </LinearLayout>
+        </TableRow>
+
     </TableRow>
 
     <TableRow
@@ -110,7 +129,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:text="BATHROOM LIGHTS"
+                    android:text="BATHROOM"
                     android:id="@+id/textView"
                     android:gravity="right"
                     android:layout_marginRight="10dip" />
@@ -137,6 +156,26 @@
             </LinearLayout>
         </TableRow>
 
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_column="1"
+            android:layout_weight="0.5"
+            android:gravity="center_vertical">
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal"
+                android:gravity="center_vertical">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/imageButton2B"
+                    android:src="@mipmap/bulb_on"
+                    android:background="@android:color/transparent" />
+
+            </LinearLayout>
+        </TableRow>
+
+
     </TableRow>
 
     <TableRow
@@ -155,7 +194,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:text="BEDROOM LIGHTS"
+                    android:text="BEDROOM"
                     android:id="@+id/textView"
                     android:layout_marginTop="10dip"
                     android:gravity="right"
@@ -183,6 +222,26 @@
             </LinearLayout>
         </TableRow>
 
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_column="1"
+            android:layout_weight="0.5"
+            android:gravity="center_vertical">
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal"
+                android:gravity="center_vertical">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/imageButton3B"
+                    android:src="@mipmap/bulb_on"
+                    android:background="@android:color/transparent" />
+
+            </LinearLayout>
+        </TableRow>
+
+
     </TableRow>
     <TableRow
         android:layout_width="match_parent"
@@ -200,7 +259,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:text="CORRIDOR LIGHTS"
+                    android:text="CORRIDOR"
                     android:id="@+id/textView"
                     android:gravity="right"
                     android:layout_marginRight="10dip" />
@@ -227,6 +286,25 @@
             </LinearLayout>
         </TableRow>
 
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_column="1"
+            android:layout_weight="0.5"
+            android:gravity="center_vertical">
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal"
+                android:gravity="center_vertical">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/imageButton4B"
+                    android:src="@mipmap/bulb_on"
+                    android:background="@android:color/transparent" />
+
+            </LinearLayout>
+        </TableRow>
+
     </TableRow>
     <TableRow
         android:layout_width="match_parent"
@@ -244,7 +322,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:text="DINING ROOM LIGHTS"
+                    android:text="DINING"
                     android:id="@+id/textView"
                     android:gravity="right"
                     android:layout_marginRight="10dip" />
@@ -266,6 +344,25 @@
                     android:layout_height="wrap_content"
                     android:id="@+id/imageButton5"
                     android:src="@mipmap/bulb_red"
+                    android:background="@android:color/transparent" />
+
+            </LinearLayout>
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_column="1"
+            android:layout_weight="0.5"
+            android:gravity="center_vertical">
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal"
+                android:gravity="center_vertical">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/imageButton5B"
+                    android:src="@mipmap/bulb_on"
                     android:background="@android:color/transparent" />
 
             </LinearLayout>

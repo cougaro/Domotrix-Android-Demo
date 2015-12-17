@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.media.MediaPlayer;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.os.RemoteException;
@@ -29,6 +30,9 @@ import com.domotrix.android.services.IDomotrixService;
 import com.domotrix.domotrixdemo.sensors.RecognitionData;
 import com.domotrix.domotrixdemo.sensors.Sensor;
 import com.domotrix.language.DOMOTRIXCommand;
+import com.google.android.gms.appindexing.Action;
+import com.google.android.gms.appindexing.AppIndex;
+import com.google.android.gms.common.api.GoogleApiClient;
 
 import java.io.IOException;
 
@@ -56,6 +60,11 @@ public class MainActivity extends AppCompatActivity
     private boolean mIsBound = false;
 
     SensorFragment sensorFragment = SensorFragment.newInstance();
+    /**
+     * ATTENTION: This was auto-generated to implement the App Indexing API.
+     * See https://g.co/AppIndexing/AndroidStudio for more information.
+     */
+    private GoogleApiClient client;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,18 +80,55 @@ public class MainActivity extends AppCompatActivity
                 R.id.navigation_drawer,
                 (DrawerLayout) findViewById(R.id.drawer_layout));
 
-    };
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
+    }
+
+    ;
 
     @Override
     public void onStart() {
         super.onStart();
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        client.connect();
         connectToRemoteService(getApplicationContext());
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        Action viewAction = Action.newAction(
+                Action.TYPE_VIEW, // TODO: choose an action type.
+                "Main Page", // TODO: Define a title for the content shown.
+                // TODO: If you have web page content that matches this app activity's content,
+                // make sure this auto-generated web page URL is correct.
+                // Otherwise, set the URL to null.
+                Uri.parse("http://host/path"),
+                // TODO: Make sure this auto-generated app deep link URI is correct.
+                Uri.parse("android-app://com.domotrix.domotrixdemo/http/host/path")
+        );
+        AppIndex.AppIndexApi.start(client, viewAction);
     }
 
     @Override
     public void onStop() {
         super.onStop();
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        Action viewAction = Action.newAction(
+                Action.TYPE_VIEW, // TODO: choose an action type.
+                "Main Page", // TODO: Define a title for the content shown.
+                // TODO: If you have web page content that matches this app activity's content,
+                // make sure this auto-generated web page URL is correct.
+                // Otherwise, set the URL to null.
+                Uri.parse("http://host/path"),
+                // TODO: Make sure this auto-generated app deep link URI is correct.
+                Uri.parse("android-app://com.domotrix.domotrixdemo/http/host/path")
+        );
+        AppIndex.AppIndexApi.end(client, viewAction);
         disconnectFromRemoteService();
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        client.disconnect();
     }
 
     /*
@@ -107,17 +153,18 @@ public class MainActivity extends AppCompatActivity
                 sensorFragment.setSpeechRecognition(mSpeechRecognition);
             }
             try {
-                mService.remoteLog(TAG,"=======================================");
-                mService.remoteLog(TAG,"=======================================");
-                mService.remoteLog(TAG,"APP CLIENT - CONNECTED");
-                mService.remoteLog(TAG,"=======================================");
-                mService.remoteLog(TAG,"=======================================");
+                mService.remoteLog(TAG, "=======================================");
+                mService.remoteLog(TAG, "=======================================");
+                mService.remoteLog(TAG, "APP CLIENT - CONNECTED");
+                mService.remoteLog(TAG, "=======================================");
+                mService.remoteLog(TAG, "=======================================");
                 String sdkVersion = mService.getVersion();
-                Log.d(TAG,"SDK Version :"+sdkVersion);
+                Log.d(TAG, "SDK Version :" + sdkVersion);
             } catch (RemoteException e) {
-                Log.e(TAG,"ERROR",e);
+                Log.e(TAG, "ERROR", e);
             }
         }
+
         public void onServiceDisconnected(ComponentName className) {
             mService = null;
         }
@@ -208,16 +255,16 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
-    public void onActivityResult (int requestCode, int resultCode, Intent data) {
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
         DOMOTRIXCommand domotrixCommand = mSpeechRecognition.recognize(requestCode, data);
         if (domotrixCommand != null) {
             mp = MediaPlayer.create(this, R.raw.computerbeep35);
             mp.start();
-            Log.d(TAG,"Command :"+domotrixCommand.getCommand());
-            Log.d(TAG,"Controller :"+domotrixCommand.getController());
-            Log.d(TAG,"Mode :"+domotrixCommand.getMode());
-            Log.d(TAG,"Location :"+domotrixCommand.getLocation());
-            Log.d(TAG,"Start in :"+domotrixCommand.getStart()+" ms");
+            Log.d(TAG, "Command :" + domotrixCommand.getCommand());
+            Log.d(TAG, "Controller :" + domotrixCommand.getController());
+            Log.d(TAG, "Mode :" + domotrixCommand.getMode());
+            Log.d(TAG, "Location :" + domotrixCommand.getLocation());
+            Log.d(TAG, "Start in :" + domotrixCommand.getStart() + " ms");
             if (mService != null) {
                 Sensor sensor = new Sensor("com.domotrix.sensor", new RecognitionData(
                         domotrixCommand.getCommand(),
@@ -229,7 +276,7 @@ public class MainActivity extends AppCompatActivity
                         domotrixCommand.getQuantity()
                 ));
                 try {
-                    mService.publish("com.domotrix.recognitiondata",JSONMapper.encode(sensor.getData()));
+                    mService.publish("com.domotrix.recognitiondata", JSONMapper.encode(sensor.getData()));
                 } catch (RemoteException e) {
                     e.printStackTrace();
                 } catch (IOException e) {
@@ -297,7 +344,8 @@ public class MainActivity extends AppCompatActivity
             return fragment;
         }
 
-        public SensorFragment() {}
+        public SensorFragment() {
+        }
 
         public void setService(IDomotrixService service) {
             mService = service;
@@ -307,12 +355,39 @@ public class MainActivity extends AppCompatActivity
             mSpeechRecognition = speechRecognition;
         }
 
+        private class LightClickListener implements View.OnClickListener {
+            String state = null;
+            String where = null;
+
+            public LightClickListener(String state, String where) {
+                this.state = state;
+                this.where = where;
+            }
+
+            @Override
+            public void onClick(View v) {
+                if (mService != null) {
+                    try {
+                        if (mService.isConnected()) {
+                            mService.publish("com.myapp.lights", "{\"state\":\""+state+"\",\"location\":\""+where+"\"}");
+                        } else {
+                            Toast.makeText(getActivity().getApplicationContext(), "No connection", Toast.LENGTH_SHORT).show();
+                        }
+                    } catch (RemoteException e) {
+                        e.printStackTrace();
+                    }
+                } else {
+                    Toast.makeText(getActivity().getApplicationContext(), "No Service Active", Toast.LENGTH_SHORT).show();
+                }
+            }
+        }
+
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
             View rootView = inflater.inflate(R.layout.fragment_sensor, container, false);
 
-            Button btn = (Button)rootView.findViewById(R.id.commandButton);
+            Button btn = (Button) rootView.findViewById(R.id.commandButton);
             btn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -334,25 +409,35 @@ public class MainActivity extends AppCompatActivity
                 }
             });
 
-            ImageView img1 = (ImageView)rootView.findViewById(R.id.imageButton1);
-            img1.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    if (mService != null) {
-                        try {
-                            if (mService.isConnected()) {
-                                mService.publish("com.myapp.lights","{\"state\":\"on\",\"location\":\"kitchen\"}");
-                            } else {
-                                Toast.makeText(getActivity().getApplicationContext(), "No connection", Toast.LENGTH_SHORT).show();
-                            }
-                        } catch (RemoteException e) {
-                            e.printStackTrace();
-                        }
-                    } else {
-                        Toast.makeText(getActivity().getApplicationContext(), "No Service Active", Toast.LENGTH_SHORT).show();
-                    }
-                }
-            });
+            ImageView img1 = (ImageView) rootView.findViewById(R.id.imageButton1);
+            img1.setOnClickListener(new LightClickListener("off","kitchen"));
+
+            ImageView img1B = (ImageView) rootView.findViewById(R.id.imageButton1B);
+            img1B.setOnClickListener(new LightClickListener("on","kitchen"));
+
+            ImageView img2 = (ImageView) rootView.findViewById(R.id.imageButton2);
+            img2.setOnClickListener(new LightClickListener("off","bathroom"));
+
+            ImageView img2B = (ImageView) rootView.findViewById(R.id.imageButton2B);
+            img2B.setOnClickListener(new LightClickListener("on","bathroom"));
+
+            ImageView img3 = (ImageView) rootView.findViewById(R.id.imageButton3);
+            img3.setOnClickListener(new LightClickListener("off","bedroom"));
+
+            ImageView img3B = (ImageView) rootView.findViewById(R.id.imageButton3B);
+            img3B.setOnClickListener(new LightClickListener("on","bedroom"));
+
+            ImageView img4 = (ImageView) rootView.findViewById(R.id.imageButton4);
+            img4.setOnClickListener(new LightClickListener("off","corridor"));
+
+            ImageView img4B = (ImageView) rootView.findViewById(R.id.imageButton4B);
+            img4B.setOnClickListener(new LightClickListener("on","corridor"));
+
+            ImageView img5 = (ImageView) rootView.findViewById(R.id.imageButton5);
+            img5.setOnClickListener(new LightClickListener("off","dining"));
+
+            ImageView img5B = (ImageView) rootView.findViewById(R.id.imageButton5B);
+            img5B.setOnClickListener(new LightClickListener("on","dining"));
 
             return rootView;
         }
