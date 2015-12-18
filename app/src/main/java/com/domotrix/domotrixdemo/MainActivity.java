@@ -60,6 +60,8 @@ public class MainActivity extends AppCompatActivity
     private boolean mIsBound = false;
 
     SensorFragment sensorFragment = SensorFragment.newInstance();
+    TVFragment tvFragment = TVFragment.newInstance();
+
     /**
      * ATTENTION: This was auto-generated to implement the App Indexing API.
      * See https://g.co/AppIndexing/AndroidStudio for more information.
@@ -152,6 +154,9 @@ public class MainActivity extends AppCompatActivity
                 sensorFragment.setService(mService);
                 sensorFragment.setSpeechRecognition(mSpeechRecognition);
             }
+            if (tvFragment != null) {
+                tvFragment.setService(mService);
+            }
             try {
                 mService.remoteLog(TAG, "=======================================");
                 mService.remoteLog(TAG, "=======================================");
@@ -193,6 +198,11 @@ public class MainActivity extends AppCompatActivity
             case 0:
                 fragmentManager.beginTransaction()
                         .replace(R.id.container, sensorFragment)
+                        .commit();
+                break;
+            case 1:
+                fragmentManager.beginTransaction()
+                        .replace(R.id.container, tvFragment)
                         .commit();
                 break;
             default:
@@ -247,9 +257,11 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
+        /*
         if (id == R.id.action_settings) {
             return true;
         }
+        */
 
         return super.onOptionsItemSelected(item);
     }
@@ -332,9 +344,6 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-    /**
-     * A placeholder fragment containing a simple view.
-     */
     public static class SensorFragment extends Fragment {
         private IDomotrixService mService = null;
         private SpeechRecognition mSpeechRecognition;
@@ -344,8 +353,7 @@ public class MainActivity extends AppCompatActivity
             return fragment;
         }
 
-        public SensorFragment() {
-        }
+        protected SensorFragment() {}
 
         public void setService(IDomotrixService service) {
             mService = service;
@@ -387,6 +395,7 @@ public class MainActivity extends AppCompatActivity
                                  Bundle savedInstanceState) {
             View rootView = inflater.inflate(R.layout.fragment_sensor, container, false);
 
+            /*
             Button btn = (Button) rootView.findViewById(R.id.commandButton);
             btn.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -408,6 +417,13 @@ public class MainActivity extends AppCompatActivity
                     }
                 }
             });
+            */
+
+            ImageView img0 = (ImageView) rootView.findViewById(R.id.imageButton0);
+            img0.setOnClickListener(new LightClickListener("off","all"));
+
+            ImageView img0B = (ImageView) rootView.findViewById(R.id.imageButton0B);
+            img0B.setOnClickListener(new LightClickListener("on","all"));
 
             ImageView img1 = (ImageView) rootView.findViewById(R.id.imageButton1);
             img1.setOnClickListener(new LightClickListener("off","kitchen"));
@@ -438,6 +454,34 @@ public class MainActivity extends AppCompatActivity
 
             ImageView img5B = (ImageView) rootView.findViewById(R.id.imageButton5B);
             img5B.setOnClickListener(new LightClickListener("on","dining"));
+
+            return rootView;
+        }
+
+        @Override
+        public void onAttach(Activity activity) {
+            super.onAttach(activity);
+        }
+    }
+
+    public static class TVFragment extends Fragment {
+        private IDomotrixService mService = null;
+
+        public static TVFragment newInstance() {
+            TVFragment fragment = new TVFragment();
+            return fragment;
+        }
+
+        protected TVFragment() {}
+
+        public void setService(IDomotrixService service) {
+            mService = service;
+        }
+
+        @Override
+        public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                                 Bundle savedInstanceState) {
+            View rootView = inflater.inflate(R.layout.fragment_tv, container, false);
 
             return rootView;
         }

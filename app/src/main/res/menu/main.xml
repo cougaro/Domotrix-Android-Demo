@@ -5,6 +5,14 @@
     <item android:id="@+id/action_example" android:title="@string/action_example"
         app:showAsAction="withText|ifRoom" />
     -->
+    <!--
     <item android:id="@+id/action_settings" android:title="@string/action_settings"
         android:orderInCategory="100" app:showAsAction="never" />
+    -->
+    <item
+        android:id="@+id/action_lock"
+        android:icon="@drawable/ic_settings_voice_white_24dp"
+        android:orderInCategory="1"
+        android:title="voice"
+        app:showAsAction="always" />
 </menu>
