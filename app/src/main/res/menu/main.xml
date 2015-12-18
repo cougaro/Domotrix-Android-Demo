@@ -10,7 +10,7 @@
         android:orderInCategory="100" app:showAsAction="never" />
     -->
     <item
-        android:id="@+id/action_lock"
+        android:id="@+id/action_voice"
         android:icon="@drawable/ic_settings_voice_white_24dp"
         android:orderInCategory="1"
         android:title="voice"

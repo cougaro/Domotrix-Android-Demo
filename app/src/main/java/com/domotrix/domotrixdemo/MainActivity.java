@@ -5,6 +5,7 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.graphics.Color;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
@@ -35,6 +36,8 @@ import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.common.api.GoogleApiClient;
 
 import java.io.IOException;
+
+import yuku.ambilwarna.AmbilWarnaDialog;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationDrawerFragment.NavigationDrawerCallbacks {
@@ -257,11 +260,24 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        /*
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_voice) {
+            if (mService != null) {
+                try {
+                    if (mService.isConnected()) {
+                        //mService.remoteLog(TAG,"SEND THE MESSAGE VIA WAMP....");
+                        //mService.publish("com.myapp.radio","{\"state\":\"on\"}");
+                        mSpeechRecognition.start(this, "DOMOTRIX DEMO");
+                    } else {
+                        Toast.makeText(getApplicationContext(), "No connection", Toast.LENGTH_SHORT).show();
+                    }
+                } catch (RemoteException e) {
+                    e.printStackTrace();
+                }
+            } else {
+                Toast.makeText(getApplicationContext(), "No Service Active", Toast.LENGTH_SHORT).show();
+            }
             return true;
         }
-        */
 
         return super.onOptionsItemSelected(item);
     }
@@ -345,6 +361,7 @@ public class MainActivity extends AppCompatActivity
     }
 
     public static class SensorFragment extends Fragment {
+        private Context fragmentContext = null;
         private IDomotrixService mService = null;
         private SpeechRecognition mSpeechRecognition;
 
@@ -390,70 +407,92 @@ public class MainActivity extends AppCompatActivity
             }
         }
 
+        private class ChooseColorListener implements View.OnLongClickListener {
+            String where = null;
+
+            public ChooseColorListener(String where) {
+                this.where = where;
+            }
+
+            @Override
+            public boolean onLongClick(View v) {
+                AmbilWarnaDialog dialog = new AmbilWarnaDialog(fragmentContext, Color.WHITE, new AmbilWarnaDialog.OnAmbilWarnaListener() {
+                    @Override
+                    public void onCancel(AmbilWarnaDialog dialog) {
+                    }
+
+                    @Override
+                    public void onOk(AmbilWarnaDialog dialog, int color) {
+                        if (mService != null) {
+                            try {
+                                if (mService.isConnected()) {
+                                    mService.publish("com.myapp.lights", "{\"color\":\""+color+"\",\"location\":\""+where+"\"}");
+                                } else {
+                                    Toast.makeText(fragmentContext, "No connection", Toast.LENGTH_SHORT).show();
+                                }
+                            } catch (RemoteException e) {
+                                e.printStackTrace();
+                            }
+                        } else {
+                            Toast.makeText(fragmentContext, "No Service Active", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+
+                });
+                dialog.show();
+
+                return true;
+            }
+        }
+
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
             View rootView = inflater.inflate(R.layout.fragment_sensor, container, false);
 
-            /*
-            Button btn = (Button) rootView.findViewById(R.id.commandButton);
-            btn.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (mService != null) {
-                        try {
-                            if (mService.isConnected()) {
-                                //mService.remoteLog(TAG,"SEND THE MESSAGE VIA WAMP....");
-                                //mService.publish("com.myapp.radio","{\"state\":\"on\"}");
-                                mSpeechRecognition.start(getActivity(), "DOMOTRIX DEMO");
-                            } else {
-                                Toast.makeText(getActivity().getApplicationContext(), "No connection", Toast.LENGTH_SHORT).show();
-                            }
-                        } catch (RemoteException e) {
-                            e.printStackTrace();
-                        }
-                    } else {
-                        Toast.makeText(getActivity().getApplicationContext(), "No Service Active", Toast.LENGTH_SHORT).show();
-                    }
-                }
-            });
-            */
+            fragmentContext = container.getContext();
 
             ImageView img0 = (ImageView) rootView.findViewById(R.id.imageButton0);
-            img0.setOnClickListener(new LightClickListener("off","all"));
+            img0.setOnClickListener(new LightClickListener("off", "all"));
 
             ImageView img0B = (ImageView) rootView.findViewById(R.id.imageButton0B);
-            img0B.setOnClickListener(new LightClickListener("on","all"));
+            img0B.setOnClickListener(new LightClickListener("on", "all"));
+            img0B.setOnLongClickListener(new ChooseColorListener("all"));
 
             ImageView img1 = (ImageView) rootView.findViewById(R.id.imageButton1);
-            img1.setOnClickListener(new LightClickListener("off","kitchen"));
+            img1.setOnClickListener(new LightClickListener("off", "kitchen"));
 
             ImageView img1B = (ImageView) rootView.findViewById(R.id.imageButton1B);
             img1B.setOnClickListener(new LightClickListener("on","kitchen"));
+            img1B.setOnLongClickListener(new ChooseColorListener("kitchen"));
 
             ImageView img2 = (ImageView) rootView.findViewById(R.id.imageButton2);
-            img2.setOnClickListener(new LightClickListener("off","bathroom"));
+            img2.setOnClickListener(new LightClickListener("off", "bathroom"));
 
             ImageView img2B = (ImageView) rootView.findViewById(R.id.imageButton2B);
             img2B.setOnClickListener(new LightClickListener("on","bathroom"));
+            img2B.setOnLongClickListener(new ChooseColorListener("bathroom"));
 
             ImageView img3 = (ImageView) rootView.findViewById(R.id.imageButton3);
-            img3.setOnClickListener(new LightClickListener("off","bedroom"));
+            img3.setOnClickListener(new LightClickListener("off", "bedroom"));
 
             ImageView img3B = (ImageView) rootView.findViewById(R.id.imageButton3B);
             img3B.setOnClickListener(new LightClickListener("on","bedroom"));
+            img3B.setOnLongClickListener(new ChooseColorListener("bedroom"));
 
             ImageView img4 = (ImageView) rootView.findViewById(R.id.imageButton4);
             img4.setOnClickListener(new LightClickListener("off","corridor"));
 
             ImageView img4B = (ImageView) rootView.findViewById(R.id.imageButton4B);
             img4B.setOnClickListener(new LightClickListener("on","corridor"));
+            img4B.setOnLongClickListener(new ChooseColorListener("corridor"));
 
             ImageView img5 = (ImageView) rootView.findViewById(R.id.imageButton5);
             img5.setOnClickListener(new LightClickListener("off","dining"));
 
             ImageView img5B = (ImageView) rootView.findViewById(R.id.imageButton5B);
             img5B.setOnClickListener(new LightClickListener("on","dining"));
+            img5B.setOnLongClickListener(new ChooseColorListener("dining"));
 
             return rootView;
         }
