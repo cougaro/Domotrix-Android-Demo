@@ -11,7 +11,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.os.RemoteException;
-import android.speech.RecognitionService;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.DrawerLayout;
@@ -23,7 +22,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -64,6 +62,7 @@ public class MainActivity extends AppCompatActivity
 
     SensorFragment sensorFragment = SensorFragment.newInstance();
     TVFragment tvFragment = TVFragment.newInstance();
+    CameraFragment cameraFragment = CameraFragment.newInstance();
 
     /**
      * ATTENTION: This was auto-generated to implement the App Indexing API.
@@ -160,6 +159,9 @@ public class MainActivity extends AppCompatActivity
             if (tvFragment != null) {
                 tvFragment.setService(mService);
             }
+            if (cameraFragment != null) {
+                cameraFragment.setService(mService);
+            }
             try {
                 mService.remoteLog(TAG, "=======================================");
                 mService.remoteLog(TAG, "=======================================");
@@ -208,6 +210,11 @@ public class MainActivity extends AppCompatActivity
                         .replace(R.id.container, tvFragment)
                         .commit();
                 break;
+            case 2:
+                fragmentManager.beginTransaction()
+                        .replace(R.id.container, cameraFragment)
+                        .commit();
+                break;
             default:
                 fragmentManager.beginTransaction()
                         .replace(R.id.container, PlaceholderFragment.newInstance(position + 1))
@@ -233,7 +240,6 @@ public class MainActivity extends AppCompatActivity
     public void restoreActionBar() {
         ActionBar actionBar = getSupportActionBar();
         assert actionBar != null;
-        actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
         actionBar.setDisplayShowTitleEnabled(true);
         actionBar.setTitle(mTitle);
     }
@@ -511,7 +517,7 @@ public class MainActivity extends AppCompatActivity
             return fragment;
         }
 
-        protected TVFragment() {}
+        private TVFragment() {}
 
         public void setService(IDomotrixService service) {
             mService = service;
@@ -530,5 +536,34 @@ public class MainActivity extends AppCompatActivity
             super.onAttach(activity);
         }
     }
+
+    public static class CameraFragment extends Fragment {
+        private IDomotrixService mService = null;
+
+        public static CameraFragment newInstance() {
+            CameraFragment fragment = new CameraFragment();
+            return fragment;
+        }
+
+        private CameraFragment() {}
+
+        public void setService(IDomotrixService service) {
+            mService = service;
+        }
+
+        @Override
+        public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                                 Bundle savedInstanceState) {
+            View rootView = inflater.inflate(R.layout.fragment_camera, container, false);
+
+            return rootView;
+        }
+
+        @Override
+        public void onAttach(Activity activity) {
+            super.onAttach(activity);
+        }
+    }
+
 
 }
