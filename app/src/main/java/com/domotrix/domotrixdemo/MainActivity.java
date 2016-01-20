@@ -11,6 +11,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.os.RemoteException;
+import android.speech.tts.TextToSpeech;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.DrawerLayout;
@@ -37,6 +38,7 @@ import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.common.api.GoogleApiClient;
 
 import java.io.IOException;
+import java.util.Locale;
 
 import yuku.ambilwarna.AmbilWarnaDialog;
 
@@ -46,6 +48,7 @@ public class MainActivity extends AppCompatActivity
     private final static String TAG = "DEMO";
     private SpeechRecognition mSpeechRecognition = new SpeechRecognition();
     private MediaPlayer mp;
+    private TextToSpeech tts;
 
     /**
      * Fragment managing the behaviors, interactions and presentation of the navigation drawer.
@@ -81,6 +84,16 @@ public class MainActivity extends AppCompatActivity
         mNavigationDrawerFragment = (NavigationDrawerFragment)
                 getSupportFragmentManager().findFragmentById(R.id.navigation_drawer);
         mTitle = getTitle();
+
+        // Setup text to speech
+        tts = new TextToSpeech(getApplicationContext(), new TextToSpeech.OnInitListener() {
+            @Override
+            public void onInit(int status) {
+                if(status != TextToSpeech.ERROR) {
+                    tts.setLanguage(Locale.ITALY);
+                }
+            }
+        });
 
         // Set up the drawer.
         mNavigationDrawerFragment.setUp(
@@ -277,12 +290,14 @@ public class MainActivity extends AppCompatActivity
                         //mService.publish("com.myapp.radio","{\"state\":\"on\"}");
                         mSpeechRecognition.start(this, "DOMOTRIX DEMO");
                     } else {
+                        if (tts != null) tts.speak("nessuna connessione", TextToSpeech.QUEUE_FLUSH, null);
                         Toast.makeText(getApplicationContext(), "No connection", Toast.LENGTH_SHORT).show();
                     }
                 } catch (RemoteException e) {
                     e.printStackTrace();
                 }
             } else {
+                if (tts != null) tts.speak("servizio non attivo", TextToSpeech.QUEUE_FLUSH, null);
                 Toast.makeText(getApplicationContext(), "No Service Active", Toast.LENGTH_SHORT).show();
             }
             return true;
