@@ -1,6 +1,70 @@
 <?xml version="1.0" encoding="utf-8"?>
-<WebView  xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/webview"
+
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-/>
+    android:layout_height="fill_parent">
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:background="@drawable/bg"
+        android:orientation="vertical">
+
+        <WebView  xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/webview"
+            android:layout_width="match_parent"
+            android:layout_height="300dip"
+            android:background="#ffffff" />
+
+        <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content">
+
+            <RelativeLayout
+                android:id="@+id/group_cross"
+                android:layout_width="fill_parent"
+                android:layout_height="340dip"
+                android:paddingBottom="20dip"
+                android:paddingTop="20dip">
+
+                <Button
+                    android:id="@+id/btn_up"
+                    android:layout_alignParentTop="true"
+                    android:layout_centerHorizontal="true"
+                    android:layout_width="135dip" android:layout_height="95dip"
+                    android:background="@drawable/button_up"/>
+
+                <Button
+                    android:id="@+id/btn_left"
+                    android:layout_alignParentLeft="true"
+                    android:layout_centerVertical="true"
+                    android:layout_centerHorizontal="false"
+                    android:layout_width="86dip" android:layout_height="135dip"
+                    android:background="@drawable/button_left"/>
+                <Button
+                    android:id="@+id/btn_enter"
+                    android:layout_centerInParent="true"
+                    android:layout_width="90dip" android:layout_height="90dip"
+                    android:background="@drawable/button_enter_center"/>
+                <Button
+                    android:id="@+id/btn_right"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_centerHorizontal="false"
+                    android:layout_width="86dip" android:layout_height="135dip"
+                    android:background="@drawable/button_right"/>
+
+                <Button
+                    android:id="@+id/btn_down"
+                    android:layout_alignParentBottom="true"
+                    android:layout_centerHorizontal="true"
+                    android:layout_centerVertical="false"
+                    android:layout_width="135dip" android:layout_height="95dip"
+                    android:background="@drawable/button_down"/>
+            </RelativeLayout>
+
+        </RelativeLayout>
+
+    </LinearLayout>
+
+</ScrollView>

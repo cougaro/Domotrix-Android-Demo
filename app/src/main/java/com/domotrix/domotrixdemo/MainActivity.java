@@ -22,6 +22,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebView;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -555,6 +556,9 @@ public class MainActivity extends AppCompatActivity
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
             View rootView = inflater.inflate(R.layout.fragment_camera, container, false);
+
+            WebView webview = (WebView) rootView.findViewById(R.id.webview);
+            webview.loadUrl("http://192.168.0.103:81/videostream.cgi?loginuse=admin&loginpas=");
 
             return rootView;
         }
