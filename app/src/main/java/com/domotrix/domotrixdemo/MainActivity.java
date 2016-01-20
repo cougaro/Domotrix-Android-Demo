@@ -22,7 +22,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebChromeClient;
 import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -558,6 +560,12 @@ public class MainActivity extends AppCompatActivity
             View rootView = inflater.inflate(R.layout.fragment_camera, container, false);
 
             WebView webview = (WebView) rootView.findViewById(R.id.webview);
+            webview.setWebViewClient(new WebViewClient() {
+                public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
+                    String data = "<html><body style=\"margin: 0; padding: 0\">" + "<img src=\"noise.gif\" width=\"100%\" height=\"100%\" /></body></html>";
+                    view.loadDataWithBaseURL("file:///android_asset/",data , "text/html", "utf-8",null);
+                }
+            });
             webview.loadUrl("http://192.168.0.103:81/videostream.cgi?loginuse=admin&loginpas=");
 
             return rootView;
