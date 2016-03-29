@@ -37,7 +37,9 @@ public interface DOMOTRIXRecognitionConstants {
   /** RegularExpression Id. */
   int GOOD_NIGHT = 30;
   /** RegularExpression Id. */
-  int STRING = 31;
+  int FIND = 31;
+  /** RegularExpression Id. */
+  int STRING = 32;
 
   /** Lexical state. */
   int DEFAULT = 0;
@@ -75,6 +77,7 @@ public interface DOMOTRIXRecognitionConstants {
     "<TIME>",
     "<GOOD_MORNING>",
     "<GOOD_NIGHT>",
+    "<FIND>",
     "<STRING>",
     "\".\"",
   };

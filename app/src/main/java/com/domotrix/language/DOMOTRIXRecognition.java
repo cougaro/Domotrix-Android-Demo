@@ -70,7 +70,7 @@ public class DOMOTRIXRecognition implements DOMOTRIXRecognitionConstants {
         jj_la1[2] = jj_gen;
         ;
       }
-      jj_consume_token(32);
+      jj_consume_token(33);
 //String speech = "";
     String cmd = objCommand.toString();
     String enm = (objEnum == null ? null : objEnum.toString());
@@ -159,7 +159,7 @@ public class DOMOTRIXRecognition implements DOMOTRIXRecognitionConstants {
         jj_la1[4] = jj_gen;
         ;
       }
-      jj_consume_token(32);
+      jj_consume_token(33);
 System.out.println("Command "+objCommand.toString());
     System.out.println("What "+objWhat.toString());
     DOMOTRIXCommand domotrixCmd = new DOMOTRIXCommand();
@@ -192,7 +192,7 @@ System.out.println("Command "+objCommand.toString());
         jj_la1[6] = jj_gen;
         ;
       }
-      jj_consume_token(32);
+      jj_consume_token(33);
 System.out.println("Command "+objCommand.toString());
     System.out.println("What "+objWhat.toString());
     DOMOTRIXCommand domotrixCmd = new DOMOTRIXCommand();
@@ -225,7 +225,7 @@ System.out.println("Command "+objCommand.toString());
         jj_la1[8] = jj_gen;
         ;
       }
-      jj_consume_token(32);
+      jj_consume_token(33);
 System.out.println("Command :"+objCommand.toString());
     System.out.println("What :"+objWhat.toString());
     DOMOTRIXCommand domotrixCmd = new DOMOTRIXCommand();
@@ -235,9 +235,31 @@ System.out.println("Command :"+objCommand.toString());
     {if ("" != null) return domotrixCmd;}
       break;
       }
+    case FIND:{
+      objCommand = jj_consume_token(FIND);
+      objWhat = jj_consume_token(STRING);
+      switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
+      case DECIMAL_LITERAL:{
+        jj_consume_token(DECIMAL_LITERAL);
+        break;
+        }
+      default:
+        jj_la1[9] = jj_gen;
+        ;
+      }
+      jj_consume_token(33);
+System.out.println("Command :"+objCommand.toString());
+    System.out.println("What :"+objWhat.toString());
+    DOMOTRIXCommand domotrixCmd = new DOMOTRIXCommand();
+    domotrixCmd.setCommand(DOMOTRIXCommand.FIND);
+    domotrixCmd.setMode(objWhat.toString());
+    //domotrixCmd.setSpeech("cerco "+objWhat.toString());
+    {if ("" != null) return domotrixCmd;}
+      break;
+      }
     case GOOD_MORNING:{
       objCommand = jj_consume_token(GOOD_MORNING);
-      jj_consume_token(32);
+      jj_consume_token(33);
 System.out.println("Command :"+objCommand.toString());
     DOMOTRIXCommand domotrixCmd = new DOMOTRIXCommand();
     domotrixCmd.setCommand(DOMOTRIXCommand.MODE);
@@ -247,7 +269,7 @@ System.out.println("Command :"+objCommand.toString());
       }
     case GOOD_NIGHT:{
       objCommand = jj_consume_token(GOOD_NIGHT);
-      jj_consume_token(32);
+      jj_consume_token(33);
 System.out.println("Command :"+objCommand.toString());
     DOMOTRIXCommand domotrixCmd = new DOMOTRIXCommand();
     domotrixCmd.setCommand(DOMOTRIXCommand.MODE);
@@ -256,7 +278,7 @@ System.out.println("Command :"+objCommand.toString());
       break;
       }
     default:
-      jj_la1[9] = jj_gen;
+      jj_la1[10] = jj_gen;
       jj_consume_token(-1);
       throw new ParseException();
     }
@@ -272,7 +294,7 @@ System.out.println("Command :"+objCommand.toString());
   public Token jj_nt;
   private int jj_ntk;
   private int jj_gen;
-  final private int[] jj_la1 = new int[10];
+  final private int[] jj_la1 = new int[11];
   static private int[] jj_la1_0;
   static private int[] jj_la1_1;
   static {
@@ -280,10 +302,10 @@ System.out.println("Command :"+objCommand.toString());
       jj_la1_init_1();
    }
    private static void jj_la1_init_0() {
-      jj_la1_0 = new int[] {0x800000,0x2000000,0x4000000,0x8000000,0x4000000,0x8000000,0x4000000,0x8000000,0x4000000,0x603c0000,};
+      jj_la1_0 = new int[] {0x800000,0x2000000,0x4000000,0x8000000,0x4000000,0x8000000,0x4000000,0x8000000,0x4000000,0x8000000,0xe03c0000,};
    }
    private static void jj_la1_init_1() {
-      jj_la1_1 = new int[] {0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,};
+      jj_la1_1 = new int[] {0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,};
    }
 
   /** Constructor with InputStream. */
@@ -297,7 +319,7 @@ System.out.println("Command :"+objCommand.toString());
     token = new Token();
     jj_ntk = -1;
     jj_gen = 0;
-    for (int i = 0; i < 10; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 11; i++) jj_la1[i] = -1;
   }
 
   /** Reinitialise. */
@@ -311,7 +333,7 @@ System.out.println("Command :"+objCommand.toString());
     token = new Token();
     jj_ntk = -1;
     jj_gen = 0;
-    for (int i = 0; i < 10; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 11; i++) jj_la1[i] = -1;
   }
 
   /** Constructor. */
@@ -321,7 +343,7 @@ System.out.println("Command :"+objCommand.toString());
     token = new Token();
     jj_ntk = -1;
     jj_gen = 0;
-    for (int i = 0; i < 10; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 11; i++) jj_la1[i] = -1;
   }
 
   /** Reinitialise. */
@@ -331,7 +353,7 @@ System.out.println("Command :"+objCommand.toString());
     token = new Token();
     jj_ntk = -1;
     jj_gen = 0;
-    for (int i = 0; i < 10; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 11; i++) jj_la1[i] = -1;
   }
 
   /** Constructor with generated Token Manager. */
@@ -340,7 +362,7 @@ System.out.println("Command :"+objCommand.toString());
     token = new Token();
     jj_ntk = -1;
     jj_gen = 0;
-    for (int i = 0; i < 10; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 11; i++) jj_la1[i] = -1;
   }
 
   /** Reinitialise. */
@@ -349,7 +371,7 @@ System.out.println("Command :"+objCommand.toString());
     token = new Token();
     jj_ntk = -1;
     jj_gen = 0;
-    for (int i = 0; i < 10; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 11; i++) jj_la1[i] = -1;
   }
 
   private Token jj_consume_token(int kind) throws ParseException {
@@ -400,12 +422,12 @@ System.out.println("Command :"+objCommand.toString());
   /** Generate ParseException. */
   public ParseException generateParseException() {
     jj_expentries.clear();
-    boolean[] la1tokens = new boolean[33];
+    boolean[] la1tokens = new boolean[34];
     if (jj_kind >= 0) {
       la1tokens[jj_kind] = true;
       jj_kind = -1;
     }
-    for (int i = 0; i < 10; i++) {
+    for (int i = 0; i < 11; i++) {
       if (jj_la1[i] == jj_gen) {
         for (int j = 0; j < 32; j++) {
           if ((jj_la1_0[i] & (1<<j)) != 0) {
@@ -417,7 +439,7 @@ System.out.println("Command :"+objCommand.toString());
         }
       }
     }
-    for (int i = 0; i < 33; i++) {
+    for (int i = 0; i < 34; i++) {
       if (la1tokens[i]) {
         jj_expentry = new int[1];
         jj_expentry[0] = i;

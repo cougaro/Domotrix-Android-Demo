@@ -16,6 +16,8 @@ public class DOMOTRIXCommand {
   public final static int MODE = 4;
   public final static int SHOW = 5;
   public final static int CANCEL = 6;
+  public final static int FIND = 7;
+
 
   public final static int ONLY = 1;
   public final static int ALL = 2;

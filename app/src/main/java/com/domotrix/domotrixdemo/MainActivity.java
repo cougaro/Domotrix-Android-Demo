@@ -291,14 +291,12 @@ public class MainActivity extends AppCompatActivity
                         mSpeechRecognition.start(this, "DOMOTRIX DEMO");
                     } else {
                         if (tts != null) tts.speak("nessuna connessione", TextToSpeech.QUEUE_FLUSH, null);
-                        Toast.makeText(getApplicationContext(), "No connection", Toast.LENGTH_SHORT).show();
                     }
                 } catch (RemoteException e) {
                     e.printStackTrace();
                 }
             } else {
                 if (tts != null) tts.speak("servizio non attivo", TextToSpeech.QUEUE_FLUSH, null);
-                Toast.makeText(getApplicationContext(), "No Service Active", Toast.LENGTH_SHORT).show();
             }
             return true;
         }
@@ -310,8 +308,8 @@ public class MainActivity extends AppCompatActivity
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         DOMOTRIXCommand domotrixCommand = mSpeechRecognition.recognize(requestCode, data);
         if (domotrixCommand != null) {
-            mp = MediaPlayer.create(this, R.raw.computerbeep35);
-            mp.start();
+            //mp = MediaPlayer.create(this, R.raw.computerbeep35);
+            //mp.start();
             Log.d(TAG, "Command :" + domotrixCommand.getCommand());
             Log.d(TAG, "Controller :" + domotrixCommand.getController());
             Log.d(TAG, "Mode :" + domotrixCommand.getMode());
@@ -329,6 +327,7 @@ public class MainActivity extends AppCompatActivity
                 ));
                 try {
                     mService.publish("com.domotrix.recognitiondata", JSONMapper.encode(sensor.getData()));
+                    mService.speech("eseguo.");
                 } catch (RemoteException e) {
                     e.printStackTrace();
                 } catch (IOException e) {
@@ -339,8 +338,13 @@ public class MainActivity extends AppCompatActivity
                 toast.show();
             }
         } else {
-            mp = MediaPlayer.create(this, R.raw.denybeep1);
-            mp.start();
+            //mp = MediaPlayer.create(this, R.raw.denybeep1);
+            //mp.start();
+            try {
+                mService.speech("scusa, non ho capito.");
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -575,12 +579,14 @@ public class MainActivity extends AppCompatActivity
             View rootView = inflater.inflate(R.layout.fragment_camera, container, false);
 
             WebView webview = (WebView) rootView.findViewById(R.id.webview);
+            /*
             webview.setWebViewClient(new WebViewClient() {
                 public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
                     String data = "<html><body style=\"margin: 0; padding: 0\">" + "<img src=\"noise.gif\" width=\"100%\" height=\"100%\" /></body></html>";
                     view.loadDataWithBaseURL("file:///android_asset/",data , "text/html", "utf-8",null);
                 }
             });
+            */
             webview.loadUrl("http://192.168.0.103:81/videostream.cgi?loginuse=admin&loginpas=");
 
             return rootView;
