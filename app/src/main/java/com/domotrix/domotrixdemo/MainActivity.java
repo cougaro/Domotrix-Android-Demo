@@ -30,6 +30,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.domotrix.android.services.IDomotrixService;
+import com.domotrix.android.services.IDomotrixServiceListener;
 import com.domotrix.domotrixdemo.sensors.RecognitionData;
 import com.domotrix.domotrixdemo.sensors.Sensor;
 import com.domotrix.language.DOMOTRIXCommand;
@@ -186,6 +187,32 @@ public class MainActivity extends AppCompatActivity
                 mService.remoteLog(TAG, "=======================================");
                 String sdkVersion = mService.getVersion();
                 Log.d(TAG, "SDK Version :" + sdkVersion);
+
+                // Example Subscribe
+                mService.subscribe("com.demo.beat", new IDomotrixServiceListener() {
+                    @Override
+                    public void onMessage(String wampEvent, String jsonMessage) throws RemoteException {
+                        Log.d(TAG,"*****************************************************");
+                        Log.d(TAG,"MESSAGE RECEIVED");
+                        Log.d(TAG, wampEvent);
+                        Log.d(TAG, jsonMessage);
+                        Log.d(TAG,"*****************************************************");
+                    }
+
+                    @Override
+                    public void onFault(String description) throws RemoteException {
+                        Log.e(TAG,"*****************************************************");
+                        Log.e(TAG, description);
+                        Log.e(TAG,"*****************************************************");
+                    }
+
+                    @Override
+                    public IBinder asBinder() {
+                        return null;
+                    }
+                });
+
+
             } catch (RemoteException e) {
                 Log.e(TAG, "ERROR", e);
             }
